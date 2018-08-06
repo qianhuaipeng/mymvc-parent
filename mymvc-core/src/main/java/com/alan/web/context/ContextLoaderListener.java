@@ -1,5 +1,7 @@
 package com.alan.web.context;
 
+import com.alan.utils.ConfigUtils;
+
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
@@ -13,6 +15,7 @@ public class ContextLoaderListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
+        ConfigUtils.init();
 
     }
 
