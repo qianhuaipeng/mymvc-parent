@@ -1,5 +1,7 @@
 package com.alan.aop;
 
+import com.alan.utils.SessionContext;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionContext;
@@ -14,86 +16,86 @@ import java.util.Enumeration;
 public class MyHttpSession implements HttpSession {
     @Override
     public long getCreationTime() {
-        return SessionContext;
+        return SessionContext.getSession().getCreationTime();
     }
 
     @Override
     public String getId() {
-        return null;
+        return SessionContext.getSession().getId();
     }
 
     @Override
     public long getLastAccessedTime() {
-        return 0;
+        return SessionContext.getSession().getLastAccessedTime();
     }
 
     @Override
     public ServletContext getServletContext() {
-        return null;
+        return SessionContext.getSession().getServletContext();
     }
 
     @Override
     public void setMaxInactiveInterval(int i) {
-
+        SessionContext.getSession().setMaxInactiveInterval(i);
     }
 
     @Override
     public int getMaxInactiveInterval() {
-        return 0;
+        return SessionContext.getSession().getMaxInactiveInterval();
     }
 
     @Override
     public HttpSessionContext getSessionContext() {
-        return null;
+        return SessionContext.getSession().getSessionContext();
     }
 
     @Override
     public Object getAttribute(String s) {
-        return null;
+        return SessionContext.getSession().getAttribute(s);
     }
 
     @Override
     public Object getValue(String s) {
-        return null;
+        return SessionContext.getSession().getValue(s);
     }
 
     @Override
     public Enumeration<String> getAttributeNames() {
-        return null;
+        return SessionContext.getSession().getAttributeNames();
     }
 
     @Override
     public String[] getValueNames() {
-        return new String[0];
+        return SessionContext.getSession().getValueNames();
     }
 
     @Override
     public void setAttribute(String s, Object o) {
-
+        SessionContext.getSession().setAttribute(s,o);
     }
 
     @Override
     public void putValue(String s, Object o) {
-
+        SessionContext.getSession().putValue(s,o);
     }
 
     @Override
     public void removeAttribute(String s) {
-
+        SessionContext.getSession().removeAttribute(s);
     }
 
     @Override
     public void removeValue(String s) {
-
+        SessionContext.getSession().removeValue(s);
     }
 
     @Override
     public void invalidate() {
-
+        SessionContext.getSession().invalidate();
     }
 
     @Override
     public boolean isNew() {
-        return false;
+        return SessionContext.getSession().isNew();
     }
 }

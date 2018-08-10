@@ -8,13 +8,13 @@ import java.lang.reflect.Method;
  * date: create in 14:06 2018/8/6
  * modified By：
  */
-public abstract class Rule {
+public abstract class MyRule {
 
     protected String rule;
 
     protected boolean isVaild = true;
 
-    public Rule(String rule) {
+    public MyRule(String rule) {
         this.rule = rule;
     }
 
