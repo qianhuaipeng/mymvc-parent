@@ -3,10 +3,7 @@ package com.alan.utils;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * author: alan.peng
@@ -15,6 +12,13 @@ import java.util.List;
  * modified By：
  */
 public class MyUtils {
+    public static <T, V> Map<T,V> newHashMap(){
+        return new HashMap<T, V>();
+    }
+
+    public static <T, V> Map<T, V> newHashMap(int len) {
+        return new HashMap<T, V>((int) (len / 0.75) + 1);
+    }
 
     public static <T> List<T> newArrayList(){
         return new ArrayList<T>();
