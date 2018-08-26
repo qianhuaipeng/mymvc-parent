@@ -4,7 +4,6 @@ import com.alan.utils.ConfigUtils;
 import com.alan.utils.MyUtils;
 import com.alan.utils.PkgUtils;
 import com.alan.utils.StringUtils;
-import com.alan.web.bind.annotation.Component;
 import com.alan.web.bind.annotation.Controller;
 import com.alan.web.bind.annotation.PathVariable;
 import com.alan.web.bind.annotation.RequestMapping;
@@ -42,7 +41,7 @@ public class UrlMappingRegistry {
 
         try {
             clazes = PkgUtils.findClazeByAnnotation(ConfigUtils.getProperty("package.scan"), Controller.class);
-
+            register(clazes);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -84,7 +83,13 @@ public class UrlMappingRegistry {
             urls = method.getAnnotation(RequestMapping.class).value();
             flag = false;
             for (String url: urls) {
-
+                try {
+                    buildUrlMapping(method,clazeUrl, url);
+                    urlMap.put(clazeUrl + url , urlMapping);
+                    flag = true;
+                } catch (Exception e) {
+                    LOGGER.error("Error raised when buliding urlMapping, url is " + url , e);
+                }
             }
         }
     }
@@ -130,7 +135,12 @@ public class UrlMappingRegistry {
                 urlMapping.setPathVariableMap(pathVariableMap);
                 pathUrls.add(urlMapping);
             }
+        } else {
+            urlMapping.setUrl(clazeUrl + url);
+            urlMapping.setUrlExpression("^" + clazeUrl + url + "$");
+            pathUrls.add(urlMapping);
         }
+
         return urlMapping;
     }
 }

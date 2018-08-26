@@ -17,6 +17,8 @@ public class ContextLoaderListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         ConfigUtils.init();
         AppContext.init();
+
+        UrlMappingRegistry.init();
     }
 
     @Override
