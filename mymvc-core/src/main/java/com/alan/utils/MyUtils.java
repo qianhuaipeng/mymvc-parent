@@ -109,6 +109,14 @@ public class MyUtils {
     public static <A extends Annotation> boolean isAnnotated(Method method, Class<A> annoClaze){
         return method.getAnnotation(annoClaze) != null;
     }
+
+    public static boolean contains(Annotation[] annos, Class<? extends Annotation> annoClaze){
+        for (Annotation annotation : annos) {
+            if (annotation.annotationType() == annoClaze)
+                return true;
+        }
+        return false;
+    }
     public static <A extends Annotation> List<Method> findMethods(Class<?> claze, Class<A> annoClaze){
         Method[] methods = claze.getDeclaredMethods();
         if (MyUtils.isEmpty(methods))

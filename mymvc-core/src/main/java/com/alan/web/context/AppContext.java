@@ -36,17 +36,20 @@ public class AppContext {
 
         try {
             clazes = PkgUtils.findClazeByAnnotation(ConfigUtils.getProperty("package.scan"), Component.class);
-            for (Class claze: clazes) {
-                clazeMap.put(StringUtils.lowerFirst(claze.getSimpleName()),claze.getName());
+            if (clazes != null) {
+                for (Class claze: clazes) {
+                    clazeMap.put(StringUtils.lowerFirst(claze.getSimpleName()),claze.getName());
+                }
+                clazeMap.put("httpServletRequest", HttpServletRequest.class.getName());
+                beanMap.put("httpServletRequest", new MyHttpServletRequest());
+
+                clazeMap.put("httpServletResponse", HttpServletResponse.class.getName());
+                beanMap.put("httpServletResponse",new MyHttpServletResponse());
+
+                clazeMap.put("httpSession", HttpSession.class.getName());
+                beanMap.put("httpSession", new MyHttpSession());
             }
-            clazeMap.put("httpServletRequest", HttpServletRequest.class.getName());
-            beanMap.put("httpServletRequest", new MyHttpServletRequest());
 
-            clazeMap.put("httpServletResponse", HttpServletResponse.class.getName());
-            beanMap.put("httpServletResponse",new MyHttpServletResponse());
-
-            clazeMap.put("httpSession", HttpSession.class.getName());
-            beanMap.put("httpSession", new MyHttpSession());
 
         } catch (Exception e) {
             e.printStackTrace();

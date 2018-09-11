@@ -7,6 +7,7 @@ import com.alan.utils.StringUtils;
 import com.alan.web.bind.annotation.Controller;
 import com.alan.web.bind.annotation.PathVariable;
 import com.alan.web.bind.annotation.RequestMapping;
+import com.alan.web.bind.annotation.RequestMethod;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import org.slf4j.Logger;
@@ -62,7 +63,7 @@ public class UrlMappingRegistry {
 
     public static void register(Class<?> controller){
         String[] urls = null;
-        String clazeUrl = null;
+        String clazeUrl = "";
         if (MyUtils.isAnnotated(controller, RequestMapping.class)) {
             urls = controller.getAnnotation(RequestMapping.class).value();
             if (MyUtils.isEmpty(urls) || urls.length > 1) {
@@ -84,7 +85,7 @@ public class UrlMappingRegistry {
             flag = false;
             for (String url: urls) {
                 try {
-                    buildUrlMapping(method,clazeUrl, url);
+                    urlMapping = buildUrlMapping(method,clazeUrl, url);
                     urlMap.put(clazeUrl + url , urlMapping);
                     flag = true;
                 } catch (Exception e) {
@@ -142,5 +143,38 @@ public class UrlMappingRegistry {
         }
 
         return urlMapping;
+    }
+
+    public static UrlMapping match(String requestMethod, String path){
+        Collection<UrlMapping> urlMappings = urlMap.get(path);
+        if (MyUtils.isEmpty(urlMappings)) {
+            if (!MyUtils.isEmpty(pathUrls)) {
+                for (UrlMapping urlMapping: pathUrls) {
+                    if (urlMapping.getUrlPattern().matcher(path).find()) {
+                        urlMappings = urlMap.get(urlMapping.getUrl());
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (MyUtils.isEmpty(urlMappings))
+            return null;
+
+        RequestMethod[] allowedActions;
+        for (UrlMapping urlMapping: urlMappings) {
+            allowedActions = urlMapping.getMethod().getAnnotation(RequestMapping.class).method();
+
+            if (MyUtils.isEmpty(allowedActions))
+                return urlMapping;
+
+            for (RequestMethod allowedAction : allowedActions) {
+                if (allowedAction.name().equals(requestMethod)) {
+                    return urlMapping;
+                }
+            }
+        }
+
+        return null;
     }
 }

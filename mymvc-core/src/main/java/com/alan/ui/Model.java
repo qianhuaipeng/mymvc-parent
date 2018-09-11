@@ -21,7 +21,7 @@ public interface Model {
 
     Model mergeAttribute(Map<String,?> attributes);
 
-    Model containsAttribute(String attributeName);
+    boolean containsAttribute(String attributeName);
 
     Map<String,Object> asMap();
 }

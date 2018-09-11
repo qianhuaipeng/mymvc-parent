@@ -101,7 +101,7 @@ public class PkgUtils {
         Class<?> claze = null;
         for (File file : dirFiles) {
             if (file.isDirectory()) {
-                findClazesByFile(pkgName, pkgPath, recursive, classes);
+                findClazesByFile(pkgName + "." + file.getName(), file.getAbsolutePath(), recursive, classes);
             } else {
                 className = file.getName();
                 className = className.substring(0, className.length() - 6);
