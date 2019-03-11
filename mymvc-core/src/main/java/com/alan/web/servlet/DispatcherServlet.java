@@ -53,7 +53,10 @@ public class DispatcherServlet extends HttpServlet {
 
     }
 
-    public void init(){}
+    @Override
+    public void init(){
+
+    }
 
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -61,12 +64,15 @@ public class DispatcherServlet extends HttpServlet {
         request.setAttribute("root", appName);
         String path = request.getRequestURI().substring(appName.length());
         // handle static resource, e.g. css, js, html, image ...
-        if (isStaticResource(response, path))
+        if (isStaticResource(response, path)) {
             return;
+        }
 
         // remove the last /
-        if (path.length() > 1 && path.endsWith("/"))
+        if (path.length() > 1 && path.endsWith("/")) {
             path = path.substring(0, path.length()-1);
+        }
+
 
         // find matched method
         UrlMapping urlMapping = UrlMappingRegistry.match(request.getMethod(), path);
@@ -116,8 +122,10 @@ public class DispatcherServlet extends HttpServlet {
                         dispatcher.forward(request,response);
                     }
                 }
-            } else
+            } else {
                 method.invoke(controller, paras);
+            }
+
         } catch (Exception e) {
             LOGGER.error("Error raised in DispatherServlet.", e);
             showError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -194,32 +202,40 @@ public class DispatcherServlet extends HttpServlet {
         for (Annotation anno : paramAnnos) {
             if (PathVariable.class.equals(anno.annotationType())) {
                 name = ((PathVariable) anno).value();
-                if (name.isEmpty())
+                if (name.isEmpty()) {
                     continue;
+                }
+
                 String pathVariable = urlMapping.getPathVariable(SessionContext.getContext().getString(SessionContext.REQUEST_URL), name);
                 Object targetValue = MyUtils.convert(pathVariable, paramClaze);
                 return targetValue;
             }
             if (RequestParam.class.equals(anno.annotationType())) {
                 name = ((RequestParam) anno).value();
-                if (name.isEmpty())
+                if (name.isEmpty()) {
                     continue;
+                }
+
                 value = SessionContext.getRequest().getParameter(name);
                 SessionContext.getRequest().setAttribute(name, value);
                 return value;
             }
             if (RequestHeader.class.equals(anno.annotationType())) {
                 name = ((RequestHeader) anno).value();
-                if (name.isEmpty())
+                if (name.isEmpty()) {
                     continue;
+                }
+
                 value = SessionContext.getRequest().getHeader(name);
                 SessionContext.getRequest().setAttribute(name, value);
                 return value;
             }
             if (CookieValue.class.equals(anno.annotationType())) {
                 name = ((CookieValue) anno).value();
-                if (name.isEmpty())
+                if (name.isEmpty()) {
                     continue;
+                }
+
                 Cookie[] cookies = SessionContext.getRequest().getCookies();
                 if (!MyUtils.isEmpty(cookies)) {
                     for (Cookie cookie : cookies) {
