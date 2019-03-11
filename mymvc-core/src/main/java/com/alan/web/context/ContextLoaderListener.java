@@ -7,7 +7,7 @@ import javax.servlet.ServletContextListener;
 
 /**
  * author: alan.peng
- * description:
+ * description: 初始化、监听ServletContext对象的生命周期，
  * date: create in 16:12 2018/8/2
  * modified By：
  */
